@@ -1,0 +1,345 @@
+{% extends "base.html" %}
+{% block content %}
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+<div id="particles-js"></div>
+
+<style>
+
+/* PARTICLE BACKGROUND */
+
+#particles-js{
+position:fixed;
+width:100%;
+height:100%;
+top:0;
+left:0;
+z-index:-1;
+}
+
+/* PAGE FADE IN */
+
+.glass{
+animation:pageFade 0.7s ease;
+}
+
+@keyframes pageFade{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.page-container{
+max-width:1000px;
+margin:auto;
+}
+
+.page-title{
+font-size:36px;
+font-weight:700;
+text-align:center;
+background:linear-gradient(45deg,#6C63FF,#00E5FF);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+margin-bottom:10px;
+}
+
+.page-subtitle{
+text-align:center;
+color:#aaa;
+margin-bottom:40px;
+font-size:15px;
+}
+
+/* WORKFLOW */
+
+.workflow{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:15px;
+flex-wrap:wrap;
+margin-bottom:40px;
+animation:workflowFloat 6s ease-in-out infinite;
+}
+
+@keyframes workflowFloat{
+0%{transform:translateY(0)}
+50%{transform:translateY(-4px)}
+100%{transform:translateY(0)}
+}
+
+.workflow-step{
+background:rgba(255,255,255,0.06);
+padding:12px 18px;
+border-radius:10px;
+font-size:14px;
+}
+
+.arrow{
+font-size:20px;
+color:#888;
+}
+
+/* GRID */
+
+.steps-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:20px;
+}
+
+/* STEP BOX */
+
+.step-box{
+background:rgba(255,255,255,0.05);
+padding:20px;
+border-radius:12px;
+transition:0.3s;
+border:1px solid rgba(255,255,255,0.08);
+position:relative;
+animation:cardAppear 0.6s ease;
+}
+
+@keyframes cardAppear{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.step-box:hover{
+transform:translateY(-6px) scale(1.02);
+box-shadow:0 0 20px rgba(108,99,255,0.35);
+}
+
+.step-icon{
+font-size:26px;
+margin-bottom:8px;
+}
+
+.step-number{
+position:absolute;
+top:12px;
+right:14px;
+font-size:13px;
+background:#6C63FF;
+padding:3px 8px;
+border-radius:6px;
+}
+
+.step-title{
+font-size:18px;
+font-weight:600;
+margin-bottom:6px;
+}
+
+.step-text{
+color:#ddd;
+font-size:14px;
+line-height:1.6;
+}
+
+.highlight{
+color:#6C63FF;
+font-weight:500;
+}
+
+/* OLLAMA SECTION */
+
+.ollama-section{
+margin-top:40px;
+}
+
+.ollama-box{
+background:rgba(255,255,255,0.05);
+padding:25px;
+border-radius:12px;
+border:1px solid rgba(255,255,255,0.08);
+transition:0.3s;
+animation:cardAppear 0.7s ease;
+}
+
+.ollama-box:hover{
+box-shadow:0 0 20px rgba(0,229,255,0.35);
+transform:translateY(-4px);
+}
+
+.ollama-title{
+font-size:22px;
+margin-bottom:10px;
+color:#00E5FF;
+font-weight:600;
+}
+
+</style>
+
+<div class="glass page-container">
+
+<div class="page-title">How AI Prompt Studio Works</div>
+
+<div class="page-subtitle">
+A simple workflow that converts your ideas into powerful AI prompts
+</div>
+
+<!-- WORKFLOW -->
+
+<div class="workflow">
+
+<div class="workflow-step">User Input</div>
+
+<div class="arrow">→</div>
+
+<div class="workflow-step">Task & Tone Detection</div>
+
+<div class="arrow">→</div>
+
+<div class="workflow-step">Ollama AI Processing</div>
+
+<div class="arrow">→</div>
+
+<div class="workflow-step">Enhanced Prompt</div>
+
+</div>
+
+<!-- STEPS -->
+
+<div class="steps-grid">
+
+<div class="step-box">
+<div class="step-number">1</div>
+<div class="step-icon">📝</div>
+<div class="step-title">User Input</div>
+<div class="step-text">
+Users enter a simple request such as writing an email, generating code,
+or explaining a concept.
+
+The system accepts <span class="highlight">natural language input</span>
+so users do not need prior knowledge of prompt engineering.
+</div>
+</div>
+
+<div class="step-box">
+<div class="step-number">2</div>
+<div class="step-icon">🧠</div>
+<div class="step-title">Intent Detection</div>
+<div class="step-text">
+Machine learning models analyze the user request to determine
+the <span class="highlight">type of task</span>.
+</div>
+</div>
+
+<div class="step-box">
+<div class="step-number">3</div>
+<div class="step-icon">🎯</div>
+<div class="step-title">Tone Identification</div>
+<div class="step-text">
+The system detects the desired communication tone such as professional,
+friendly, informative, or creative.
+</div>
+</div>
+
+<div class="step-box">
+<div class="step-number">4</div>
+<div class="step-icon">⚡</div>
+<div class="step-title">Prompt Enhancement</div>
+<div class="step-text">
+The system improves the prompt by enhancing grammar, clarity,
+structure, and context.
+</div>
+</div>
+
+<div class="step-box">
+<div class="step-number">5</div>
+<div class="step-icon">🚀</div>
+<div class="step-title">Prompt Generation</div>
+<div class="step-text">
+The optimized prompt is generated and displayed to the user.
+</div>
+</div>
+
+<div class="step-box">
+<div class="step-number">6</div>
+<div class="step-icon">📚</div>
+<div class="step-title">Prompt Management</div>
+<div class="step-text">
+Generated prompts are stored in the user's history for easy access.
+</div>
+</div>
+
+</div>
+
+<!-- OLLAMA SECTION -->
+
+<div class="ollama-section">
+
+<div class="ollama-box">
+
+<div class="ollama-title">
+🤖 AI Processing with Ollama
+</div>
+
+<div class="step-text">
+
+AI Prompt Studio integrates a local AI engine powered by <strong>Ollama</strong>.
+The model improves prompts by rewriting them with better grammar,
+clarity, and structure.
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+particlesJS("particles-js",{
+
+particles:{
+number:{value:70},
+color:{value:"#6C63FF"},
+shape:{type:"circle"},
+opacity:{value:0.5},
+size:{value:3,random:true},
+
+line_linked:{
+enable:true,
+distance:150,
+color:"#00E5FF",
+opacity:0.4,
+width:1
+},
+
+move:{
+enable:true,
+speed:2
+}
+
+},
+
+interactivity:{
+events:{
+onhover:{enable:true,mode:"repulse"},
+onclick:{enable:true,mode:"push"}
+}
+},
+
+retina_detect:true
+
+});
+
+</script>
+
+{% endblock %}

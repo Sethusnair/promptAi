@@ -1,0 +1,312 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+<style>
+
+/* PARTICLE BACKGROUND */
+
+#particles-js{
+position:fixed;
+width:100%;
+height:100%;
+top:0;
+left:0;
+z-index:-1;
+}
+
+/* CHAT CONTAINER ANIMATION */
+
+.glass{
+animation:fadeIn 0.7s ease;
+}
+
+@keyframes fadeIn{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.hero-title{
+font-size:34px;
+font-weight:700;
+text-align:center;
+background:linear-gradient(45deg,#6C63FF,#00E5FF);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+margin-bottom:8px;
+}
+
+.hero-subtitle{
+text-align:center;
+color:#d0d0d0;
+margin-bottom:20px;
+font-size:15px;
+}
+
+/* CHAT AREA */
+
+.chat-container{
+height:360px;
+overflow-y:auto;
+background:rgba(255,255,255,0.07);
+border-radius:14px;
+padding:18px;
+margin-bottom:20px;
+scroll-behavior:smooth;
+}
+
+/* USER MESSAGE */
+
+.user-msg{
+text-align:right;
+margin-bottom:16px;
+}
+
+.bubble-user{
+display:inline-block;
+background:linear-gradient(45deg,#6C63FF,#00E5FF);
+color:white;
+padding:10px 15px;
+border-radius:14px;
+max-width:75%;
+font-size:14px;
+}
+
+/* AI MESSAGE */
+
+.ai-msg{
+text-align:left;
+margin-bottom:16px;
+}
+
+.bubble-ai{
+display:inline-block;
+background:rgba(255,255,255,0.12);
+padding:14px;
+border-radius:14px;
+max-width:80%;
+color:#ffffff;
+font-size:14px;
+}
+
+/* INPUT */
+
+.input-box{
+background:rgba(255,255,255,0.10)!important;
+border:none!important;
+color:#ffffff!important;
+border-radius:10px;
+padding:12px;
+height:52px;
+resize:none;
+font-size:15px;
+}
+
+.input-box:focus{
+background:rgba(255,255,255,0.15)!important;
+outline:none;
+box-shadow:0 0 12px #6C63FF;
+}
+
+/* BUTTON */
+
+.generate-btn{
+background:linear-gradient(45deg,#6C63FF,#00E5FF);
+border:none;
+color:white;
+font-weight:600;
+height:52px;
+border-radius:10px;
+width:100%;
+transition:0.25s;
+}
+
+.generate-btn:hover{
+box-shadow:0 0 15px #6C63FF;
+}
+
+pre{
+white-space:pre-wrap;
+color:#ffffff;
+margin-bottom:0;
+}
+
+.copy-btn{
+background:#00E5FF;
+border:none;
+color:#000;
+font-size:13px;
+padding:4px 10px;
+border-radius:6px;
+}
+
+</style>
+
+
+<!-- PARTICLES -->
+<div id="particles-js"></div>
+
+
+<div class="glass">
+
+<div class="hero-title">AI Prompt Studio</div>
+
+<div class="hero-subtitle">
+Chat with AI to generate powerful, enhanced prompts
+</div>
+
+
+<div class="chat-container" id="chatBox">
+
+{% if request.session.last_input %}
+
+<div class="user-msg">
+<div class="bubble-user">
+{{ request.session.last_input }}
+</div>
+</div>
+
+<div class="ai-msg">
+
+<div class="bubble-ai">
+
+<pre>{{ request.session.last_prompt }}</pre>
+
+<button class="copy-btn mt-2"
+onclick="copyPrompt()"
+id="copyBtn">
+Copy Prompt
+</button>
+
+</div>
+
+</div>
+
+{% else %}
+
+<div style="text-align:center;color:#ffffff;opacity:0.8;">
+Start by typing something like:<br><br>
+
+• Write a resume for a software engineer<br>
+• Generate Python login code<br>
+• Explain machine learning
+</div>
+
+{% endif %}
+
+</div>
+
+
+<form method="post" id="chatForm">
+
+{% csrf_token %}
+
+<div class="row align-items-center g-2">
+
+<div class="col-md-9 d-flex">
+
+<textarea
+name="input_text"
+class="form-control input-box w-100"
+placeholder="Ask AI to create a powerful prompt..."
+required
+id="chatInput"></textarea>
+
+</div>
+
+<div class="col-md-3 d-flex">
+
+<button class="generate-btn">
+Generate
+</button>
+
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+
+<script>
+
+/* COPY PROMPT */
+
+function copyPrompt(){
+
+navigator.clipboard.writeText(`{{ request.session.last_prompt|escapejs }}`)
+
+let btn=document.getElementById("copyBtn")
+
+btn.innerText="Copied ✓"
+
+setTimeout(()=>{
+btn.innerText="Copy Prompt"
+},1500)
+
+}
+
+
+/* PARTICLE ANIMATION */
+
+particlesJS("particles-js",{
+
+"particles":{
+
+"number":{"value":70},
+
+"color":{"value":"#6C63FF"},
+
+"shape":{"type":"circle"},
+
+"opacity":{"value":0.5},
+
+"size":{"value":3,"random":true},
+
+"line_linked":{
+"enable":true,
+"distance":150,
+"color":"#00E5FF",
+"opacity":0.4,
+"width":1
+},
+
+"move":{
+"enable":true,
+"speed":2
+}
+
+},
+
+"interactivity":{
+
+"events":{
+"onhover":{
+"enable":true,
+"mode":"repulse"
+},
+"onclick":{
+"enable":true,
+"mode":"push"
+}
+}
+
+},
+
+"retina_detect":true
+
+});
+
+</script>
+
+
+{% endblock %}

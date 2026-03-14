@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="glass">
+
+    <h4>Detected Task: {{ task }} ({{ task_conf }}%)</h4>
+<h5>Tone: {{ tone }} ({{ tone_conf }}%)</h5>
+
+<pre>{{ prompt }}</pre>
+    <button onclick="copyText()" class="btn btn-info mt-2">Copy Prompt</button>
+
+<script>
+function copyText(){
+    navigator.clipboard.writeText(`{{ prompt|escapejs }}`);
+    alert("Copied!");
+}
+</script>
+
+    <a href="/home/" class="btn btn-ai w-100 mt-3">
+        🔁 Generate Another
+    </a>
+
+</div>
+{% endblock %}

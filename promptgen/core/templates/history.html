@@ -1,0 +1,350 @@
+{% extends "base.html" %}
+{% block content %}
+
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+<div id="particles-js"></div>
+
+<div class="container mt-5 d-flex justify-content-center">
+
+    <div class="glass p-4 history-wrapper">
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            <h3 class="mb-0">📜 Prompt History</h3>
+
+            <a href="{% url 'home' %}" class="btn btn-outline-light btn-sm">
+                ← Back
+            </a>
+        </div>
+
+        <!-- Filters -->
+        <div class="row g-3 mb-4">
+
+            <div class="col-md-5">
+                <input type="text"
+                       id="searchInput"
+                       class="form-control"
+                       placeholder="🔍 Search prompts...">
+            </div>
+
+            <div class="col-md-4">
+                <select id="taskFilter" class="form-select">
+                    <option value="">All Tasks</option>
+                    <option value="blog">Blog</option>
+                    <option value="email">Email</option>
+                    <option value="code">Code</option>
+                    <option value="story">Story</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <select id="favFilter" class="form-select">
+                    <option value="">All</option>
+                    <option value="true">Favorites</option>
+                </select>
+            </div>
+
+        </div>
+
+        <!-- Prompt Cards -->
+        <div id="promptContainer">
+
+            {% for p in prompts %}
+
+            <div class="prompt-card"
+                 data-task="{{p.task_type|lower}}"
+                 data-fav="{{p.is_favorite|lower}}">
+
+                <div class="card prompt-card-inner p-4 shadow">
+
+                    <div class="d-flex justify-content-between flex-wrap gap-2">
+
+                        <div class="flex-grow-1">
+                            <h6 class="text-muted mb-1">Input</h6>
+                            <p class="mb-0">{{ p.user_input }}</p>
+                        </div>
+
+                        <div>
+                            <span class="badge bg-primary me-1">
+                                {{ p.task_type }}
+                            </span>
+
+                            <span class="badge bg-secondary">
+                                {{ p.tone }}
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <h6 class="mt-3 text-muted">Generated Prompt</h6>
+
+                    <pre class="prompt-box">{{ p.generated_prompt }}</pre>
+
+                    <div class="mt-3 d-flex flex-wrap gap-2">
+
+                        <a href="/favorite/{{p.id}}/"
+                           class="btn btn-warning btn-sm">
+
+                           {% if p.is_favorite %}
+                           ★ Favorited
+                           {% else %}
+                           ☆ Favorite
+                           {% endif %}
+
+                        </a>
+
+                        <button class="btn btn-info btn-sm"
+                                onclick="copyText(`{{p.generated_prompt|escapejs}}`)">
+                            📋 Copy
+                        </button>
+
+                        <button class="btn btn-secondary btn-sm"
+                                onclick="togglePrompt(this)">
+                            Expand
+                        </button>
+
+                        <a href="/delete/{{p.id}}/"
+                           class="btn btn-danger btn-sm">
+                            Delete
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<style>
+
+/* PARTICLE BACKGROUND */
+
+#particles-js{
+position:fixed;
+width:100%;
+height:100%;
+top:0;
+left:0;
+z-index:-1;
+}
+
+/* PAGE ENTRY ANIMATION */
+
+.glass{
+animation:fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* Centered wrapper */
+
+.history-wrapper{
+width:100%;
+max-width:900px;
+}
+
+/* Glass container */
+
+.glass{
+background: rgba(255,255,255,0.05);
+backdrop-filter: blur(12px);
+border-radius:14px;
+}
+
+/* Prompt container */
+
+#promptContainer{
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:20px;
+}
+
+/* Prompt cards */
+
+.prompt-card{
+width:100%;
+animation:cardAppear 0.5s ease;
+}
+
+@keyframes cardAppear{
+from{
+opacity:0;
+transform:translateY(15px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.prompt-card-inner{
+background:#121212;
+color:white;
+border-radius:12px;
+border:1px solid rgba(255,255,255,0.05);
+transition:all 0.25s ease;
+}
+
+.prompt-card-inner:hover{
+transform:translateY(-4px) scale(1.01);
+box-shadow:0 15px 30px rgba(0,0,0,0.5);
+}
+
+/* Prompt preview */
+
+.prompt-box{
+max-height:120px;
+overflow:hidden;
+background:#000;
+padding:15px;
+border-radius:8px;
+font-size:13px;
+white-space:pre-wrap;
+transition:max-height 0.3s ease;
+}
+
+/* Buttons */
+
+.btn-sm{
+font-size:13px;
+padding:6px 12px;
+}
+
+</style>
+
+
+<script>
+
+/* Copy Prompt */
+
+function copyText(text){
+navigator.clipboard.writeText(text).then(()=>{
+alert("Prompt copied 🚀")
+})
+}
+
+/* Expand Prompt */
+
+function togglePrompt(btn){
+
+let box = btn.closest(".prompt-card-inner").querySelector(".prompt-box")
+
+if(box.style.maxHeight === "none"){
+box.style.maxHeight = "120px"
+btn.innerText = "Expand"
+}
+else{
+box.style.maxHeight = "none"
+btn.innerText = "Collapse"
+}
+
+}
+
+/* Filtering Logic */
+
+const searchInput = document.getElementById("searchInput")
+const taskFilter = document.getElementById("taskFilter")
+const favFilter = document.getElementById("favFilter")
+
+function filterPrompts(){
+
+let search = searchInput.value.toLowerCase()
+let task = taskFilter.value
+let fav = favFilter.value
+
+document.querySelectorAll(".prompt-card").forEach(card => {
+
+let text = card.innerText.toLowerCase()
+let cardTask = card.dataset.task
+let cardFav = card.dataset.fav
+
+let matchSearch = text.includes(search)
+let matchTask = task === "" || cardTask === task
+let matchFav = fav === "" || cardFav === fav
+
+if(matchSearch && matchTask && matchFav){
+card.style.display = ""
+}
+else{
+card.style.display = "none"
+}
+
+})
+
+}
+
+searchInput.addEventListener("keyup", filterPrompts)
+taskFilter.addEventListener("change", filterPrompts)
+favFilter.addEventListener("change", filterPrompts)
+
+
+/* PARTICLE ANIMATION */
+
+particlesJS("particles-js",{
+
+particles:{
+
+number:{value:70},
+
+color:{value:"#6C63FF"},
+
+shape:{type:"circle"},
+
+opacity:{value:0.5},
+
+size:{value:3,random:true},
+
+line_linked:{
+enable:true,
+distance:150,
+color:"#00E5FF",
+opacity:0.4,
+width:1
+},
+
+move:{
+enable:true,
+speed:2
+}
+
+},
+
+interactivity:{
+events:{
+onhover:{
+enable:true,
+mode:"repulse"
+},
+onclick:{
+enable:true,
+mode:"push"
+}
+}
+},
+
+retina_detect:true
+
+})
+
+</script>
+
+{% endblock %}
