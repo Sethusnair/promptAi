@@ -1,12 +1,24 @@
 {% extends "base.html" %}
 
+{% block navbar %}
+{% endblock %}
+
 {% block content %}
 
 <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
 <style>
 
-/* PARTICLE BACKGROUND */
+body{
+background:#0f172a;
+color:white;
+margin:0;
+font-family:system-ui;
+height:100vh;
+overflow:hidden;
+}
+
+/* PARTICLES */
 
 #particles-js{
 position:fixed;
@@ -17,154 +29,299 @@ left:0;
 z-index:-1;
 }
 
-/* CHAT CONTAINER ANIMATION */
+/* MENU BUTTON */
 
-.glass{
-animation:fadeIn 0.7s ease;
-}
-
-@keyframes fadeIn{
-from{
-opacity:0;
-transform:translateY(20px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
+.menu-btn{
+position:fixed;
+top:20px;
+left:20px;
+font-size:26px;
+background:none;
+border:none;
+color:white;
+cursor:pointer;
+z-index:1100;
 }
 
-.hero-title{
-font-size:34px;
-font-weight:700;
-text-align:center;
-background:linear-gradient(45deg,#6C63FF,#00E5FF);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-margin-bottom:8px;
+/* SIDEBAR */
+
+.sidebar{
+position:fixed;
+left:-100%;
+top:0;
+width:260px;
+height:100%;
+background:#020617;
+padding:20px;
+overflow-y:auto;
+border-right:1px solid rgba(255,255,255,0.05);
+transition:left 0.3s ease;
+z-index:1000;
+box-shadow:0 0 20px rgba(0,0,0,0.5);
 }
 
-.hero-subtitle{
-text-align:center;
-color:#d0d0d0;
+.sidebar.active{
+left:0;
+}
+
+/* SIDEBAR HEADER */
+
+.sidebar-header{
+display:flex;
+align-items:center;
+justify-content:space-between;
 margin-bottom:20px;
-font-size:15px;
+}
+
+.sidebar-header h3{
+color:#6C63FF;
+margin:0;
+}
+
+.close-btn{
+background:none;
+border:none;
+color:white;
+font-size:22px;
+cursor:pointer;
+}
+
+/* SIDEBAR LINKS */
+
+.sidebar a{
+display:block;
+color:#cbd5e1;
+text-decoration:none;
+padding:10px 12px;
+border-radius:8px;
+font-size:14px;
+margin-bottom:6px;
+transition:0.2s;
+}
+
+.sidebar a:hover{
+background:#1e293b;
+transform:translateX(4px);
+}
+
+/* PROFILE */
+
+.profile-box{
+background:#1e293b;
+padding:14px;
+border-radius:10px;
+margin-bottom:20px;
+font-size:13px;
+color:#cbd5e1;
+}
+
+/* OVERLAY */
+
+.overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.4);
+display:none;
+z-index:900;
+}
+
+.overlay.active{
+display:block;
 }
 
 /* CHAT AREA */
 
+.chat-area{
+display:flex;
+flex-direction:column;
+height:100vh;
+width:100%;
+}
+
+/* CHAT CONTAINER */
+
 .chat-container{
-height:360px;
+flex:1;
 overflow-y:auto;
-background:rgba(255,255,255,0.07);
-border-radius:14px;
-padding:18px;
-margin-bottom:20px;
-scroll-behavior:smooth;
+padding:80px 30px 140px 30px;
+max-width:900px;
+margin:auto;
+width:100%;
 }
 
 /* USER MESSAGE */
 
 .user-msg{
-text-align:right;
-margin-bottom:16px;
+display:flex;
+justify-content:flex-end;
+margin-bottom:20px;
 }
 
 .bubble-user{
-display:inline-block;
 background:linear-gradient(45deg,#6C63FF,#00E5FF);
-color:white;
-padding:10px 15px;
+padding:12px 16px;
 border-radius:14px;
-max-width:75%;
+max-width:70%;
 font-size:14px;
 }
 
 /* AI MESSAGE */
 
 .ai-msg{
-text-align:left;
-margin-bottom:16px;
+display:flex;
+justify-content:flex-start;
+margin-bottom:20px;
 }
 
 .bubble-ai{
-display:inline-block;
-background:rgba(255,255,255,0.12);
-padding:14px;
+background:#1e293b;
+padding:14px 16px;
 border-radius:14px;
-max-width:80%;
-color:#ffffff;
+max-width:75%;
 font-size:14px;
 }
 
-/* INPUT */
+/* INPUT AREA */
+
+.input-area{
+position:fixed;
+bottom:20px;
+left:0;
+width:100%;
+display:flex;
+justify-content:center;
+}
+
+/* INPUT BAR */
+
+.input-wrapper{
+display:flex;
+align-items:center;
+gap:16px;
+background:#1e293b;
+padding:16px;
+border-radius:50px;
+max-width:1000px;
+width:94%;
+box-shadow:0 15px 35px rgba(0,0,0,0.5);
+}
+
+/* TEXTAREA */
 
 .input-box{
-background:rgba(255,255,255,0.10)!important;
+flex:1;
 border:none!important;
-color:#ffffff!important;
-border-radius:10px;
-padding:12px;
-height:52px;
+background:transparent!important;
+color:white!important;
+padding:18px 22px;
 resize:none;
-font-size:15px;
+height:70px;
+font-size:17px;
+}
+
+.input-box::placeholder{
+color:white;
+opacity:0.85;
 }
 
 .input-box:focus{
-background:rgba(255,255,255,0.15)!important;
 outline:none;
-box-shadow:0 0 12px #6C63FF;
 }
 
-/* BUTTON */
+/* SEND BUTTON */
 
 .generate-btn{
 background:linear-gradient(45deg,#6C63FF,#00E5FF);
 border:none;
+height:65px;
+padding:0 36px;
+border-radius:40px;
 color:white;
 font-weight:600;
-height:52px;
-border-radius:10px;
-width:100%;
+font-size:16px;
+cursor:pointer;
 transition:0.25s;
 }
 
 .generate-btn:hover{
+transform:scale(1.05);
 box-shadow:0 0 15px #6C63FF;
 }
 
-pre{
-white-space:pre-wrap;
-color:#ffffff;
-margin-bottom:0;
+/* PROCESSING BOX */
+
+.processing-box{
+position:fixed;
+bottom:120px;
+left:50%;
+transform:translateX(-50%);
+background:#1e293b;
+padding:12px 20px;
+border-radius:10px;
+font-size:14px;
+color:#00E5FF;
+box-shadow:0 0 15px rgba(0,0,0,0.4);
+display:none;
+animation:pulse 1.5s infinite;
+z-index:1200;
 }
 
-.copy-btn{
-background:#00E5FF;
-border:none;
-color:#000;
-font-size:13px;
-padding:4px 10px;
-border-radius:6px;
+@keyframes pulse{
+0%{opacity:0.6}
+50%{opacity:1}
+100%{opacity:0.6}
 }
 
 </style>
 
-
-<!-- PARTICLES -->
 <div id="particles-js"></div>
 
+<button class="menu-btn" id="menuBtn" onclick="toggleSidebar()">☰</button>
 
-<div class="glass">
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
-<div class="hero-title">AI Prompt Studio</div>
+<div class="sidebar" id="sidebar">
 
-<div class="hero-subtitle">
-Chat with AI to generate powerful, enhanced prompts
+<div class="sidebar-header">
+<h3>PromptAI</h3>
+<button class="close-btn" onclick="closeSidebar()">✕</button>
 </div>
 
+<div class="profile-box">
+<b>{{ request.user.username }}</b><br>
+{{ profile.profession }}<br>
+{{ profile.current_role }}<br>
+{{ profile.experience }} years
+</div>
 
-<div class="chat-container" id="chatBox">
+<b style="color:#94a3b8;">Chats</b>
+
+{% for chat in chats %}
+<a href="?chat={{ chat.id }}">
+{{ chat.user_input|truncatechars:25 }}
+</a>
+{% empty %}
+<p style="color:#64748b;">No conversations</p>
+{% endfor %}
+
+<hr>
+
+<b style="color:#94a3b8;">Menu</b>
+
+<a href="/home/">🏠 Home</a>
+<a href="/history/">🕘 History</a>
+<a href="/profile/">👤 Profile</a>
+<a href="/settings/">⚙ Settings</a>
+<a href="/accounts/logout/">🚪 Logout</a>
+
+</div>
+
+<div class="chat-area">
+
+<div class="chat-container">
 
 {% if request.session.last_input %}
 
@@ -175,60 +332,69 @@ Chat with AI to generate powerful, enhanced prompts
 </div>
 
 <div class="ai-msg">
-
 <div class="bubble-ai">
-
 <pre>{{ request.session.last_prompt }}</pre>
 
-<button class="copy-btn mt-2"
-onclick="copyPrompt()"
-id="copyBtn">
+<button class="copy-btn" onclick="copyPrompt()" id="copyBtn">
 Copy Prompt
 </button>
-
 </div>
-
 </div>
 
 {% else %}
 
-<div style="text-align:center;color:#ffffff;opacity:0.8;">
-Start by typing something like:<br><br>
+<div style="text-align:center;color:#94a3b8">
 
-• Write a resume for a software engineer<br>
-• Generate Python login code<br>
-• Explain machine learning
+Try asking something like:
+
+<br><br>
+
+<span class="suggestion" onclick="useSuggestion(this)">
+Write a resume for a software engineer
+</span>
+
+<span class="suggestion" onclick="useSuggestion(this)">
+Generate Python login code
+</span>
+
+<span class="suggestion" onclick="useSuggestion(this)">
+Explain machine learning
+</span>
+
+<span class="suggestion" onclick="useSuggestion(this)">
+Create LinkedIn post
+</span>
+
 </div>
 
 {% endif %}
 
 </div>
 
+<!-- PROCESSING MESSAGE -->
 
-<form method="post" id="chatForm">
+<div id="processingBox" class="processing-box">
+⚡ Generating prompt... Please wait
+</div>
+
+<div class="input-area">
+
+<form method="post" id="promptForm">
 
 {% csrf_token %}
 
-<div class="row align-items-center g-2">
-
-<div class="col-md-9 d-flex">
+<div class="input-wrapper">
 
 <textarea
 name="input_text"
-class="form-control input-box w-100"
-placeholder="Ask AI to create a powerful prompt..."
+class="form-control input-box"
+placeholder="Send a message..."
 required
 id="chatInput"></textarea>
 
-</div>
-
-<div class="col-md-3 d-flex">
-
-<button class="generate-btn">
-Generate
+<button class="generate-btn" id="sendBtn">
+Send
 </button>
-
-</div>
 
 </div>
 
@@ -236,10 +402,37 @@ Generate
 
 </div>
 
+</div>
 
 <script>
 
-/* COPY PROMPT */
+function toggleSidebar(){
+
+let sidebar=document.getElementById("sidebar")
+let overlay=document.getElementById("overlay")
+let menuBtn=document.getElementById("menuBtn")
+
+sidebar.classList.add("active")
+overlay.classList.add("active")
+menuBtn.style.display="none"
+
+}
+
+function closeSidebar(){
+
+let sidebar=document.getElementById("sidebar")
+let overlay=document.getElementById("overlay")
+let menuBtn=document.getElementById("menuBtn")
+
+sidebar.classList.remove("active")
+overlay.classList.remove("active")
+menuBtn.style.display="block"
+
+}
+
+function useSuggestion(el){
+document.getElementById("chatInput").value = el.innerText
+}
 
 function copyPrompt(){
 
@@ -255,58 +448,47 @@ btn.innerText="Copy Prompt"
 
 }
 
+/* SHOW PROCESSING */
 
-/* PARTICLE ANIMATION */
+document.getElementById("promptForm").addEventListener("submit",function(){
+
+document.getElementById("processingBox").style.display="block"
+
+let btn=document.getElementById("sendBtn")
+btn.innerText="Processing..."
+btn.disabled=true
+
+})
 
 particlesJS("particles-js",{
 
-"particles":{
-
-"number":{"value":70},
-
-"color":{"value":"#6C63FF"},
-
-"shape":{"type":"circle"},
-
-"opacity":{"value":0.5},
-
-"size":{"value":3,"random":true},
-
-"line_linked":{
-"enable":true,
-"distance":150,
-"color":"#00E5FF",
-"opacity":0.4,
-"width":1
+particles:{
+number:{value:60},
+color:{value:"#6C63FF"},
+shape:{type:"circle"},
+opacity:{value:0.4},
+size:{value:3,random:true},
+line_linked:{
+enable:true,
+distance:150,
+color:"#00E5FF",
+opacity:0.3,
+width:1
+},
+move:{enable:true,speed:2}
 },
 
-"move":{
-"enable":true,
-"speed":2
+interactivity:{
+events:{
+onhover:{enable:true,mode:"repulse"},
+onclick:{enable:true,mode:"push"}
 }
-
 },
 
-"interactivity":{
-
-"events":{
-"onhover":{
-"enable":true,
-"mode":"repulse"
-},
-"onclick":{
-"enable":true,
-"mode":"push"
-}
-}
-
-},
-
-"retina_detect":true
+retina_detect:true
 
 });
 
 </script>
-
 
 {% endblock %}

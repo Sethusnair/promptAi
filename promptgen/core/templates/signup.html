@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <title>Signup - PromptAI</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,13 +13,13 @@
 <style>
 
 body{
-height:100vh;
+min-height:100vh;
 background:#0f172a;
 display:flex;
 align-items:center;
 justify-content:center;
 font-family:'Segoe UI',sans-serif;
-overflow:hidden;
+padding:20px;
 }
 
 #particles-js{
@@ -32,15 +33,14 @@ z-index:-1;
 
 .signup-container{
 width:100%;
-max-width:420px;
-padding:20px;
+max-width:720px;
 }
 
 .glass-card{
 background:rgba(255,255,255,0.05);
 backdrop-filter:blur(15px);
 border-radius:18px;
-padding:35px;
+padding:40px;
 border:1px solid rgba(255,255,255,0.08);
 box-shadow:0 0 40px rgba(0,0,0,0.4);
 animation:slideUp 0.6s ease;
@@ -60,8 +60,8 @@ transform:translateY(0);
 .title{
 text-align:center;
 font-weight:700;
-font-size:26px;
-margin-bottom:10px;
+font-size:28px;
+margin-bottom:8px;
 color:#6C63FF;
 text-shadow:0 0 15px #6C63FF;
 }
@@ -69,7 +69,13 @@ text-shadow:0 0 15px #6C63FF;
 .subtitle{
 text-align:center;
 color:#aaa;
-margin-bottom:25px;
+margin-bottom:30px;
+}
+
+label{
+color:#ccc;
+font-size:14px;
+margin-bottom:5px;
 }
 
 input{
@@ -80,7 +86,6 @@ background:rgba(255,255,255,0.08);
 border:none;
 color:white;
 height:45px;
-margin-top:5px;
 }
 
 input:focus{
@@ -89,18 +94,13 @@ outline:none;
 box-shadow:0 0 12px #6C63FF;
 }
 
-label{
-color:#ccc;
-font-size:14px;
-}
-
 .btn-ai{
 background:linear-gradient(45deg,#6C63FF,#00E5FF);
 border:none;
 color:white;
-height:45px;
+height:48px;
 font-weight:600;
-margin-top:15px;
+margin-top:20px;
 transition:0.3s;
 }
 
@@ -111,7 +111,7 @@ box-shadow:0 0 15px #6C63FF;
 
 .login-link{
 text-align:center;
-margin-top:15px;
+margin-top:20px;
 color:#bbb;
 }
 
@@ -151,14 +151,11 @@ color:#ff6b6b;
 <div class="glass-card">
 
 <div class="title">🤖 PromptAI</div>
-
 <div class="subtitle">Create your account</div>
 
 <form method="post">
 
 {% csrf_token %}
-
-<!-- GLOBAL FORM ERRORS -->
 
 {% if form.errors %}
 <div class="alert alert-danger">
@@ -166,27 +163,45 @@ Please correct the errors below
 </div>
 {% endif %}
 
-<div class="mb-3">
-<label>Username</label>
+<div class="row">
 
+<div class="col-md-6 mb-3">
+<label>Username</label>
 {{ form.username.errors }}
 {{ form.username }}
-
 </div>
 
-<div class="mb-3">
-<label>Password</label>
+<div class="col-md-6 mb-3">
+<label>Profession</label>
+{{ form.profession }}
+</div>
 
+<div class="col-md-6 mb-3">
+<label>Current Role</label>
+{{ form.current_role }}
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Years of Experience</label>
+{{ form.experience }}
+</div>
+
+<div class="col-md-12 mb-3">
+<label>Interests</label>
+{{ form.interests }}
+</div>
+
+<div class="col-md-6 mb-3">
+<label>Password</label>
 {{ form.password1.errors }}
 {{ form.password1 }}
-
 </div>
 
-<div class="mb-3">
+<div class="col-md-6 mb-3">
 <label>Confirm Password</label>
-
 {{ form.password2.errors }}
 {{ form.password2 }}
+</div>
 
 </div>
 
@@ -208,81 +223,75 @@ Already have an account?
 
 particlesJS("particles-js", {
 
-"particles": {
+particles: {
 
-"number": {
-"value": 70,
-"density": {
-"enable": true,
-"value_area": 800
+number:{
+value:70,
+density:{
+enable:true,
+value_area:800
 }
 },
 
-"color": {
-"value": "#6C63FF"
+color:{value:"#6C63FF"},
+
+shape:{type:"circle"},
+
+opacity:{value:0.5},
+
+size:{
+value:3,
+random:true
 },
 
-"shape": {
-"type": "circle"
+line_linked:{
+enable:true,
+distance:150,
+color:"#00E5FF",
+opacity:0.4,
+width:1
 },
 
-"opacity": {
-"value": 0.5
-},
-
-"size": {
-"value": 3,
-"random": true
-},
-
-"line_linked": {
-"enable": true,
-"distance": 150,
-"color": "#00E5FF",
-"opacity": 0.4,
-"width": 1
-},
-
-"move": {
-"enable": true,
-"speed": 2
+move:{
+enable:true,
+speed:2
 }
 
 },
 
-"interactivity": {
+interactivity:{
 
-"detect_on": "canvas",
+detect_on:"canvas",
 
-"events": {
+events:{
 
-"onhover": {
-"enable": true,
-"mode": "repulse"
+onhover:{
+enable:true,
+mode:"repulse"
 },
 
-"onclick": {
-"enable": true,
-"mode": "push"
+onclick:{
+enable:true,
+mode:"push"
 }
 
 },
 
-"modes": {
+modes:{
 
-"repulse": {
-"distance": 100
+repulse:{
+distance:100
 },
 
-"push": {
-"particles_nb": 4
+push:{
+particles_nb:4
 }
 
 }
 
 },
 
-"retina_detect": true
+retina_detect:true
 
 });
 
