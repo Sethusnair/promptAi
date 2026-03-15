@@ -156,9 +156,15 @@ text-decoration:underline;
 
 <div class="subtitle">Login to continue</div>
 
-<form method="post">
+<form method="post" action="{% url 'login' %}">
 
 {% csrf_token %}
+
+{% if form.errors %}
+<div class="alert alert-danger">
+Invalid username or password
+</div>
+{% endif %}
 
 <div class="mb-3">
 <label>Username</label>
@@ -173,7 +179,6 @@ text-decoration:underline;
 <button class="btn btn-ai w-100">Login</button>
 
 </form>
-
 <div class="signup-link">
 New user?
 <a href="/signup/">Create account</a>

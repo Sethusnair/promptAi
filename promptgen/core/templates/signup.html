@@ -21,8 +21,6 @@ font-family:'Segoe UI',sans-serif;
 overflow:hidden;
 }
 
-/* PARTICLE BACKGROUND */
-
 #particles-js{
 position:fixed;
 width:100%;
@@ -32,15 +30,11 @@ left:0;
 z-index:-1;
 }
 
-/* CONTAINER */
-
 .signup-container{
 width:100%;
 max-width:420px;
 padding:20px;
 }
-
-/* GLASS CARD */
 
 .glass-card{
 background:rgba(255,255,255,0.05);
@@ -52,8 +46,6 @@ box-shadow:0 0 40px rgba(0,0,0,0.4);
 animation:slideUp 0.6s ease;
 }
 
-/* ANIMATION */
-
 @keyframes slideUp{
 from{
 opacity:0;
@@ -64,8 +56,6 @@ opacity:1;
 transform:translateY(0);
 }
 }
-
-/* TITLE */
 
 .title{
 text-align:center;
@@ -81,8 +71,6 @@ text-align:center;
 color:#aaa;
 margin-bottom:25px;
 }
-
-/* INPUTS */
 
 input{
 width:100%;
@@ -101,14 +89,10 @@ outline:none;
 box-shadow:0 0 12px #6C63FF;
 }
 
-/* LABEL */
-
 label{
 color:#ccc;
 font-size:14px;
 }
-
-/* BUTTON */
 
 .btn-ai{
 background:linear-gradient(45deg,#6C63FF,#00E5FF);
@@ -125,8 +109,6 @@ transform:translateY(-2px);
 box-shadow:0 0 15px #6C63FF;
 }
 
-/* LOGIN LINK */
-
 .login-link{
 text-align:center;
 margin-top:15px;
@@ -142,8 +124,6 @@ text-decoration:none;
 text-decoration:underline;
 }
 
-/* ERROR */
-
 .errorlist{
 color:#ff6b6b;
 font-size:13px;
@@ -152,13 +132,18 @@ padding:0;
 margin-bottom:5px;
 }
 
+.alert-danger{
+background:#3b0f0f;
+border:none;
+color:#ff6b6b;
+}
+
 </style>
 
 </head>
 
 <body>
 
-<!-- PARTICLE BACKGROUND -->
 <div id="particles-js"></div>
 
 <div class="signup-container">
@@ -173,19 +158,36 @@ margin-bottom:5px;
 
 {% csrf_token %}
 
+<!-- GLOBAL FORM ERRORS -->
+
+{% if form.errors %}
+<div class="alert alert-danger">
+Please correct the errors below
+</div>
+{% endif %}
+
 <div class="mb-3">
 <label>Username</label>
+
+{{ form.username.errors }}
 {{ form.username }}
+
 </div>
 
 <div class="mb-3">
 <label>Password</label>
+
+{{ form.password1.errors }}
 {{ form.password1 }}
+
 </div>
 
 <div class="mb-3">
 <label>Confirm Password</label>
+
+{{ form.password2.errors }}
 {{ form.password2 }}
+
 </div>
 
 <button class="btn btn-ai w-100">Create Account</button>

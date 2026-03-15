@@ -67,9 +67,9 @@ TEMPLATES = [
     },
 ]
 
-LOGIN_REDIRECT_URL = '/'
-LOGIN_REDIRECT_URL = '/home/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = "/home/"
+LOGOUT_REDIRECT_URL = "/"
+LOGIN_URL = "/accounts/login/"
 
 WSGI_APPLICATION = 'promptgen.wsgi.application'
 
