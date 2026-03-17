@@ -27,24 +27,63 @@ def detect_tone(text):
     return tone, confidence
 
 
-def generate_prompt(user_input, task, tone):
+def generate_prompt(user_input, task, tone, context=None):
 
-    system_prompt = f"""
+    if context is None:
+        system_prompt = f"""
+You are an expert prompt engineer AI.
+
+Task Type: {task}
+Tone: {tone}
+
+Your job is to help users build a high quality AI prompt.
+
+Step 1:
+If the user gives only a short request, ask structured questions to gather details.
+
+Use a friendly tone and bullet points.
+
+Example format:
+
+AI: [smiling] Hey there! Let's refine this idea.
+
+Ask questions like:
+- Goal
+- Audience
+- Budget
+- Constraints
+- Style preferences
+- Output format
+
+Do NOT generate the final prompt yet.
+Only ask questions.
+"""
+
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_input}
+        ]
+
+    else:
+        system_prompt = f"""
 You are an expert prompt engineer.
 
 Task Type: {task}
 Tone: {tone}
 
-Rewrite the user's request into a clear, detailed, and professional AI prompt.
-Improve grammar and structure while keeping the intent.
+The user has answered clarification questions.
+
+Now generate a **clear, detailed, structured AI prompt** based on the conversation.
 """
+
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": context}
+        ]
 
     response = ollama.chat(
         model="tinyllama",
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_input}
-        ]
+        messages=messages
     )
 
     return response['message']['content']

@@ -116,13 +116,53 @@ Delete
 
 </div>
 
+
 <style>
 
+/* GLASS CARD */
+
 .glass{
-background: rgba(255,255,255,0.05);
-backdrop-filter: blur(12px);
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(12px);
 border-radius:14px;
 }
+
+/* DARK INPUTS */
+
+.form-control,
+.form-select{
+background:#1e293b !important;
+border:1px solid rgba(255,255,255,0.08) !important;
+color:white !important;
+}
+
+.form-control::placeholder{
+color:#94a3b8;
+}
+
+.form-control:focus,
+.form-select:focus{
+background:#1e293b !important;
+color:white !important;
+border-color:#6C63FF !important;
+box-shadow:0 0 0 1px #6C63FF;
+}
+
+/* PROMPT CARD */
+
+.prompt-card-inner{
+background:#020617 !important;
+color:white !important;
+border:1px solid rgba(255,255,255,0.06);
+transition:0.25s;
+}
+
+.prompt-card-inner:hover{
+transform:translateY(-4px);
+box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* PROMPT BOX */
 
 .prompt-box{
 max-height:120px;
@@ -133,9 +173,41 @@ border-radius:8px;
 font-size:13px;
 white-space:pre-wrap;
 transition:max-height 0.3s ease;
+color:#e2e8f0;
+}
+
+/* TEXT COLORS */
+
+.text-muted{
+color:#94a3b8 !important;
+}
+
+/* BADGES */
+
+.badge.bg-primary{
+background:#6C63FF !important;
+}
+
+.badge.bg-secondary{
+background:#334155 !important;
+}
+
+/* SEARCH BAR */
+
+#searchInput{
+background:#1e293b !important;
+color:white !important;
+}
+
+/* SELECT OPTIONS */
+
+select option{
+background:#1e293b;
+color:white;
 }
 
 </style>
+
 
 <script>
 
